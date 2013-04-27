@@ -1,7 +1,7 @@
-hexagonal.js hello world example
+hexagonal.js hello world example with angularjs gui.
 ====================
 
-This is the simplest possible hexagonaljs app.
+This is the simplest possible hexagonaljs app that uses AngularJS as the GUI adapter
 It shows all the basic concepts of a hexagonaljs architecture.
 
 
@@ -27,13 +27,13 @@ This is the starting point of the application. The app object initializes the us
 #<< utils
 #<< local_storage
 #<< use_case
-#<< gui
+#<< angular_gui
 #<< glue
 
 class App
   constructor: ->
     useCase      = new UseCase()
-    gui          = new Gui()
+    gui          = new AngularGui()
     glue         = new Glue(useCase, gui)
     
     useCase.start()
@@ -71,40 +71,8 @@ The gui object
 
 The idea of hexagonal architecture is based on the idea of adapters that are plugged into the domain. One of typical adapters is the gui object. It's responsible for reacting to useCase actions and for letting the user interact with the app. The gui itself shouldn't have any logic. Often, it's just a proxy between the user and the app.
 
-```coffeescript
-class Gui
-  constructor: ->
 
-  createElementFor: (templateId, data) =>
-    source = $(templateId).html()
-    template = Handlebars.compile(source)
-    html = template(data)
-    element = $(html)
-  
-  showAskForName: =>
-    element = @createElementFor("#ask-for-name-template")
-    $(".main").append(element)
-    confirmNameButton = $("#confirm-name-button")
-    confirmNameButton.click( => @confirmNameButtonClicked($("#name-input").val()))
-    $("#name-input").focus()
-    
-  confirmNameButtonClicked: (name) =>
-
-  hideAskForName: =>
-    $(".ask-for-name").remove()
-
-  showGreetMessage: (name) =>
-    element = @createElementFor("#greet-message-template", {name : name})
-    $(".main").append(element)
-    $("#restart-link").click( => @restartClicked())
-
-  restartClicked: =>
-
-  hideGreetMessage: =>
-    $(".greet-message").remove()
-```
-
-In this example, jQuery is used for selectors and basic DOM manipulation (remove, append etc). Handlebars is used for HTML rendering. As you see, some of the methods here are the GUI equivalents of the use case object methods, like: askForName -> showAskForName, greetUser -> showGreetMessage.
+In this example, we've used AngularJS capabilities for creating and managing the GUI.
 
 The glue object
 ---------------
